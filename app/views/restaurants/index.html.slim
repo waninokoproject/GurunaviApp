@@ -1,0 +1,17 @@
+p hentai
+
+- @hash.each do |rest|
+  .post
+    .row
+      .col-xs-12
+        p = rest[:name]
+    .row
+      .col-xs-3
+        = image_tag rest[:image_url][:shop_image1] , class: 'img-responsive center-block'
+
+      .col-xs-9
+        li = rest[:opentime]
+        li = rest[:holiday]
+        li = rest[:pr][:pr_short]
+
+        li = link_to '詳細はこちら', rest[:url]
