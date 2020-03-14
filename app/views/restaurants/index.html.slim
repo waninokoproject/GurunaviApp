@@ -1,17 +1,30 @@
-p hentai
 
-- @hash.each do |rest|
-  .post
-    .row
-      .col-xs-12
-        p = rest[:name]
-    .row
-      .col-xs-3
-        = image_tag rest[:image_url][:shop_image1] , class: 'img-responsive center-block'
+div.container.mt-5
+  div.row
+    div.col-md-12
+      - @hash.each do |rest|
+        .row.p-4.border-bottom.rounded-sm
+          .col-md-4.col-xs-6.text-center
+            - if rest[:image_url][:shop_image1].empty?
+              img src="https://picsum.photos/id/1/250/250"
+            - else
+              = image_tag rest[:image_url][:shop_image1], class: 'rounded img-responsive img-thumbnail'
 
-      .col-xs-9
-        li = rest[:opentime]
-        li = rest[:holiday]
-        li = rest[:pr][:pr_short]
-
-        li = link_to '詳細はこちら', rest[:url]
+          .col-md-8.p-1
+            table.table.table-hover
+                tr
+                  th scope="row" name
+                  td colspan="3"
+                    = rest[:name]
+                tr
+                  th scope="row" address
+                  td
+                    = rest[:address]
+                tr
+                  th scope="row" opentime
+                  td
+                    = rest[:opentime]
+                tr
+                  th scope="row" budget
+                  td
+                    = rest[:budget]
