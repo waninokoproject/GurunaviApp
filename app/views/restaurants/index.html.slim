@@ -1,9 +1,9 @@
 
-div.container.mt-5
+div.container-lg.mt-5
   div.row
     div.col-md-12
       - @hash.each do |rest|
-        .row.p-4.border-bottom.rounded-sm
+        .row.p-4.border.rounded.my-4.shadow
           .col-md-4.col-xs-6.text-center
             - if rest[:image_url][:shop_image1].empty?
               img src="https://picsum.photos/id/1/250/250"
@@ -11,7 +11,7 @@ div.container.mt-5
               = image_tag rest[:image_url][:shop_image1], class: 'rounded img-responsive img-thumbnail'
 
           .col-md-8.p-1
-            table.table.table-hover
+            table.table
                 tr
                   th scope="row" name
                   td colspan="3"
