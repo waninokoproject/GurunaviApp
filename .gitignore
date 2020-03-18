@@ -31,3 +31,8 @@ yarn-debug.log*
 .yarn-integrity
 
 /config/database.yml
+
+/config/certs/*
+!/config/certs/.keep
+
+/ssl

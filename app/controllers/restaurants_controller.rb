@@ -10,8 +10,8 @@ class RestaurantsController < ApplicationController
       "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
       #{}"freeword": word,
       "input_coordinates_mode": 1,
-      "latitude": 34.69,
-      "longitude": 135.1955,
+      "latitude": 34.699858000000006,
+      "longitude": 135.20657269999998,
       "hit_per_page": 10
     }
 

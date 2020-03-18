@@ -10,7 +10,7 @@ threads min_threads_count, max_threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port        ENV.fetch("PORT") { 3000 }
+port        ENV.fetch("PORT") { 8443 }
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -36,3 +36,11 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# https通信できるようにするスクリプト
+
+ssl_bind '192.168.33.10', '8443', {
+  key: "ssl/server.key",
+  cert: "ssl/server.crt",
+  verify_mode: "none"
+}
