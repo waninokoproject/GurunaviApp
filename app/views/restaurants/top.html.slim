@@ -1,61 +1,28 @@
-h1 位置情報取得サンプル
-button onclick="getPosition();"  位置情報を取得する
+link_to.king sample
+//= link_to "sample", restaurants_path, class: 'king'
 
-= @hentai
-= @hai
-
-button.king sample
-
-
-div.container-lg.mt-5
-  div.row
-    div.col-md-12
-      - if @hash
-        - @hash.each do |rest|
-          .row.p-4.border.rounded.my-4.shadow.mx-1
-            .col-md-4.col-xs-6.text-center
-              - if rest[:image_url][:shop_image1].empty?
-                img src="https://picsum.photos/id/1/250/250"
-              - else
-                = image_tag rest[:image_url][:shop_image1], class: 'rounded img-responsive img-thumbnail'
-
-            .col-md-8.p-1
-              table.table
-                  tr
-                    th scope="row" name
-                    td colspan="3"
-                      = rest[:name]
-                  tr
-                    th scope="row" address
-                    td
-                      = rest[:address]
-                  tr
-                    th scope="row" opentime
-                    td
-                      = rest[:opentime]
-                  tr
-                    th scope="row" budget
-                    td
-                      = rest[:budget]
 
 javascript:
-  //src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7Pxqp7Asgi6D4eOtkCxnir5xPiIwY3EE"
 
-  // Geolocation APIに対応している
-  if (navigator.geolocation) {
-    alert("この端末では位置情報が取得できます");
-  // Geolocation APIに対応していない
-  } else {
-    alert("この端末では位置情報が取得できません");
-  }
-
-  // 現在地取得処理
-  function getPosition() {
-    // 現在地を取得
+  //(document).on('turbolinks:load', function()
+  $(document).on('turbolinks:load', function() {
     navigator.geolocation.getCurrentPosition(
       // 取得成功した場合
       function(position) {
-          alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
+        alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
+
+        $.ajax({
+          url: 'restaurants/update',
+          type: 'POST',
+          dataType: 'json',
+          async: false,
+          data: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          },
+        });
+
+        window.location.href="restaurants/";
 
       },
       // 取得失敗した場合
@@ -76,9 +43,11 @@ javascript:
         }
       }
     );
-  }
+  });
 
-  $('.king').on('click' 'turbolinks:load', function() {
+  //src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7Pxqp7Asgi6D4eOtkCxnir5xPiIwY3EE"
+
+  $('.king').on('click', function() {
     if (navigator.geolocation) {
       alert("この端末では位置情報が取得できます");
     // Geolocation APIに対応していない
@@ -101,6 +70,8 @@ javascript:
               longitude: position.coords.longitude
             },
           });
+
+          //window.location.href="restaurants/";
 
       },
       // 取得失敗した場合

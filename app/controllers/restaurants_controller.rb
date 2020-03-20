@@ -1,22 +1,62 @@
 class RestaurantsController < ApplicationController
+
+  def top
+  end
+
   def index
+
+    @hai = "itimotu"
+    @hentai = params[:latitude]
+
+    #lat = 43.770883
+    #log = 142.365008
+    if params
+      @latitude = params[:latitude]
+      @longitude = params[:longitude]
+      puts "\n~~~~~~~~~index @longitude~~~~~~~~~~~\n"
+      puts session[:latitude]
+      restaurants_api(session[:latitude], session[:longitude])
+      #restaurants_api(lat, log)
+      #redirect_to root_path
+      #render('restaurants/index')
+    end
+  end
+
+  def update
+    #restaurants_api(params[:latitude], params[:longitude])
+    session[:latitude] = params[:latitude]
+    session[:longitude] = params[:longitude]
+    puts "\n~~~~~~~~~this is update@longitude~~~~~~~~~~~\n"
+    puts @latitude
+    redirect_to restaurants_path
+    puts "jjjjjjjjjjjjjjj"
+    #redirect_to restaurants_path(latitude: params[:latitude], longitude: params[:longitude])
+  end
+
+  private
+
+  def restaurants_api(lat, log)
     require 'json'
     require 'net/https'
     require "uri"
 
-    @hentai = "tintin"
-
-    data={
+    data = {
       "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
       #{}"freeword": word,
       "input_coordinates_mode": 1,
-      "latitude": 34.699858000000006,
-      "longitude": 135.20657269999998,
+      "latitude": lat,
+      "longitude": log,
       "hit_per_page": 10
     }
 
+    #print("alalalalalalallalala")
+    puts "\n~~~~~~~~data~~~~~~~~\n"
+    puts data
+
     query=data.to_query #ハッシュをURL文字列に変換
     uri = URI("https://api.gnavi.co.jp/RestSearchAPI/20150630/?"+query)
+    puts "\n~~~~~~~~uri~~~~~~~~\n"
+    puts uri
     #http = Net::HTTP.new(uri.host, uri.port)
     #http.use_ssl = true
     #req = Net::HTTP::Get.new(uri)
