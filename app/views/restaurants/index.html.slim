@@ -10,7 +10,7 @@ div.container-lg.mt-5
       - if @hash
         - @hash.each do |rest|
           .row.p-4.border.rounded.my-4.shadow.mx-1.position-relative
-            .col-md-4.col-xs-6.text-center
+            .col-md-4.text-center.m-auto
               - if rest[:image_url][:shop_image1].empty?
                 img src="https://picsum.photos/id/1/250/250"
               - else
@@ -49,12 +49,44 @@ div.container-lg.mt-5
                       = rest[:name]
                   .modal-body
                     .container-fluid
+                      .row.rounded.mx-1.position-relative
+                        .col-md-12.text-center
+                          - if rest[:image_url][:shop_image1].empty?
+                            img src="https://picsum.photos/id/1/250/250"
+                          - else
+                            = image_tag rest[:image_url][:shop_image1], class: 'img-fluid img-thumbnail'
+
+                        .col-md-12.p-1
+                          table.table
+                              tr
+                                th scope="row" address
+                                td = rest[:address]
+                              tr
+                                th scope="row" tel
+                                td = rest[:tel]
+                              tr
+                                th.my-auto scope="row" opentime
+                                td = rest[:opentime]
+                              tr
+                                th scope="row" holiday
+                                td = rest[:holiday]
+                              tr
+                                th scope="row" PR
+                                td = rest[:pr][:pr_long]
+                              tr
+                                th scope="row" budget
+                                td = rest[:budget]
+                              tr
+                                th scope="row" party budget
+                                td = rest[:party]
+                              tr
+                                th scope="row" lunch budget
+                                td = rest[:lunch]
+
 
                   .modal-footer
                     button.btn.btn-default[type="button" data-dismiss="modal"]
                       | 閉じる
-                    button.btn.btn-danger[type="button"]
-                      | 削除
 
 
 script[src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"]
