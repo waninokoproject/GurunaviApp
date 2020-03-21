@@ -1,41 +1,33 @@
 class RestaurantsController < ApplicationController
 
+  #改善の余地あり。１ページで完結できない為。
   def top
   end
 
+  #周辺のレストラン情報が表示される。
   def index
+    #puts "\n~~~~~~~~~index @longitude~~~~~~~~~~~\n"
+    #puts session[:latitude]
 
-    @hai = "itimotu"
-    @hentai = params[:latitude]
-
-    #lat = 43.770883
-    #log = 142.365008
-    if params
-      @latitude = params[:latitude]
-      @longitude = params[:longitude]
-      puts "\n~~~~~~~~~index @longitude~~~~~~~~~~~\n"
-      puts session[:latitude]
-      restaurants_api(session[:latitude], session[:longitude])
-      #restaurants_api(lat, log)
-      #redirect_to root_path
-      #render('restaurants/index')
-    end
+    #ぐるなびapi呼び出し
+    restaurants_api
   end
 
-  def update
-    #restaurants_api(params[:latitude], params[:longitude])
+  #ajaxで送られてきたdataをsessionに格納
+  def coordinate
+    #位置情報をsessionで管理
     session[:latitude] = params[:latitude]
     session[:longitude] = params[:longitude]
     puts "\n~~~~~~~~~this is update@longitude~~~~~~~~~~~\n"
     puts @latitude
     redirect_to restaurants_path
-    puts "jjjjjjjjjjjjjjj"
     #redirect_to restaurants_path(latitude: params[:latitude], longitude: params[:longitude])
   end
 
   private
 
-  def restaurants_api(lat, log)
+  #ぐるなびapiを使って周辺情報を検索
+  def restaurants_api
     require 'json'
     require 'net/https'
     require "uri"
@@ -44,23 +36,18 @@ class RestaurantsController < ApplicationController
       "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
       #{}"freeword": word,
       "input_coordinates_mode": 1,
-      "latitude": lat,
-      "longitude": log,
-      "hit_per_page": 10
+      "latitude": session[:latitude],
+      "longitude": session[:longitude],
+      #"hit_per_page": 10
     }
 
-    #print("alalalalalalallalala")
-    puts "\n~~~~~~~~data~~~~~~~~\n"
-    puts data
+    #puts "\n~~~~~~~~data~~~~~~~~\n"
+    #puts data
 
     query=data.to_query #ハッシュをURL文字列に変換
     uri = URI("https://api.gnavi.co.jp/RestSearchAPI/20150630/?"+query)
-    puts "\n~~~~~~~~uri~~~~~~~~\n"
-    puts uri
-    #http = Net::HTTP.new(uri.host, uri.port)
-    #http.use_ssl = true
-    #req = Net::HTTP::Get.new(uri)
-    #res = http.request(req)
+    #puts "\n~~~~~~~~uri~~~~~~~~\n"
+    #puts uri
 
     begin
       response = Net::HTTP.new(uri.host, uri.port).yield_self do |http|
@@ -77,7 +64,7 @@ class RestaurantsController < ApplicationController
       when Net::HTTPSuccess
 
         hash = JSON.parse(response.body, symbolize_names: true)
-
+        @total = hash[:total_hit_count]
         @hash = hash[:rest]
 
         # puts @hash ["rest"][0]["name"]

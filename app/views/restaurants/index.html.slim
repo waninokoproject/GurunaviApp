@@ -1,18 +1,15 @@
-h1 位置情報取得サンプル
-button onclick="getPosition();"  位置情報を取得する
 
-= @hentai
-= @hai
+= @total
 
-button.king sample
 
+/! ボタン・リンククリック後に表示される画面の内容
 
 div.container-lg.mt-5
   div.row
     div.col-md-12
       - if @hash
         - @hash.each do |rest|
-          .row.p-4.border.rounded.my-4.shadow.mx-1
+          .row.p-4.border.rounded.my-4.shadow.mx-1.position-relative
             .col-md-4.col-xs-6.text-center
               - if rest[:image_url][:shop_image1].empty?
                 img src="https://picsum.photos/id/1/250/250"
@@ -38,88 +35,28 @@ div.container-lg.mt-5
                     td
                       = rest[:budget]
 
-javascript:
-  //src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7Pxqp7Asgi6D4eOtkCxnir5xPiIwY3EE"
+            /!stretched-linkの影響でmodal先がおかしくなる。position-staticで解決
+            a.stretched-link.btn.position-static[data-toggle="modal" data-target="#id-#{rest[:id]}"]
 
-  // Geolocation APIに対応している
-  if (navigator.geolocation) {
-    alert("この端末では位置情報が取得できます");
-  // Geolocation APIに対応していない
-  } else {
-    alert("この端末では位置情報が取得できません");
-  }
 
-  // 現在地取得処理
-  function getPosition() {
-    // 現在地を取得
-    navigator.geolocation.getCurrentPosition(
-      // 取得成功した場合
-      function(position) {
-          alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
+            /!modaiの中身
+            .modal.fade[tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" id="id-#{rest[:id]}"]
+              .modal-dialog.modal-xl.modal-dialog-centered
+                .modal-content
 
-      },
-      // 取得失敗した場合
-      function(error) {
-        switch(error.code) {
-          case 1: //PERMISSION_DENIED
-            alert("位置情報の利用が許可されていません");
-            break;
-          case 2: //POSITION_UNAVAILABLE
-            alert("現在位置が取得できませんでした");
-            break;
-          case 3: //TIMEOUT
-            alert("タイムアウトになりました");
-            break;
-          default:
-            alert("その他のエラー(エラーコード:"+error.code+")");
-            break;
-        }
-      }
-    );
-  }
+                  .modal-header
+                    h5.modal-title
+                      = rest[:name]
+                  .modal-body
+                    .container-fluid
 
-  $('.king').on('click' 'turbolinks:load', function() {
-    if (navigator.geolocation) {
-      alert("この端末では位置情報が取得できます");
-    // Geolocation APIに対応していない
-    } else {
-      alert("この端末では位置情報が取得できません");
-    }
+                  .modal-footer
+                    button.btn.btn-default[type="button" data-dismiss="modal"]
+                      | 閉じる
+                    button.btn.btn-danger[type="button"]
+                      | 削除
 
-    navigator.geolocation.getCurrentPosition(
-      // 取得成功した場合
-      function(position) {
-          alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
 
-          $.ajax({
-            url: 'restaurants/index',
-            type: 'POST',
-            dataType: 'json',
-            async: false,
-            data: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude
-            },
-          });
-
-      },
-      // 取得失敗した場合
-      function(error) {
-        switch(error.code) {
-          case 1: //PERMISSION_DENIED
-            alert("位置情報の利用が許可されていません");
-            break;
-          case 2: //POSITION_UNAVAILABLE
-            alert("現在位置が取得できませんでした");
-            break;
-          case 3: //TIMEOUT
-            alert("タイムアウトになりました");
-            break;
-          default:
-            alert("その他のエラー(エラーコード:"+error.code+")");
-            break;
-        }
-      }
-    );
-    //alert("クリックされました");
-  });
+script[src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"]
+script[src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"]
+script[src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"]
