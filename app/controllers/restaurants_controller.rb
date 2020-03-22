@@ -13,6 +13,14 @@ class RestaurantsController < ApplicationController
     restaurants_api
   end
 
+  #検索を絞り込むためのアクション。freewordとかetc..
+  def search
+    #puts "\n\n-------parmas--------\n\n"
+    #puts params
+
+    redirect_to restaurants_path
+  end
+
   #ajaxで送られてきたdataをsessionに格納
   def coordinate
     #位置情報をsessionで管理
