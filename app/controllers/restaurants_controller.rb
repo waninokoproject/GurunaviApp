@@ -55,7 +55,7 @@ class RestaurantsController < ApplicationController
     require "uri"
 
     data = {
-      "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
+      "keyid": "",
       "freeword": session[:freeword],
       "input_coordinates_mode": 1,
       "latitude": session[:latitude],
