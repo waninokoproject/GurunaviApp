@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   #resourcesはやめましょう。
   resources :restaurants
 
+  post "restaurants/page"
   post "restaurants/search"
   post "restaurants/coordinate"
 end

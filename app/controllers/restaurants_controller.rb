@@ -2,21 +2,35 @@ class RestaurantsController < ApplicationController
 
   #改善の余地あり。１ページで完結できない為。
   def top
+    session[:offset_page] = 1
   end
 
   #周辺のレストラン情報が表示される。
   def index
-    #puts "\n~~~~~~~~~index @longitude~~~~~~~~~~~\n"
-    #puts session[:latitude]
-
     #ぐるなびapi呼び出し
     restaurants_api
   end
 
   #検索を絞り込むためのアクション。freewordとかetc..
   def search
-    #puts "\n\n-------parmas--------\n\n"
-    #puts params
+    puts "\n\n-------parmas--------\n\n"
+    puts params
+    puts "\n\n"
+
+    #paramsで送られてきた情報をsessionに入れる。
+    params.each_key{|key|
+      session[key] = params[key]
+      puts key
+      puts session[key]
+    }
+
+    redirect_to restaurants_path
+  end
+
+  def page
+    session[:offset_page] = params[:page]
+    puts "\n\n----------------------------------------------------------\n\n"
+    puts params[:page]
 
     redirect_to restaurants_path
   end
@@ -42,15 +56,25 @@ class RestaurantsController < ApplicationController
 
     data = {
       "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
-      #{}"freeword": word,
+      "freeword": session[:freeword],
       "input_coordinates_mode": 1,
       "latitude": session[:latitude],
       "longitude": session[:longitude],
-      #"hit_per_page": 10
+      "range": session[:range],
+      "lunch": session[:lunch],
+      "no_smoking": session[:no_smoking],
+      "bottomless_cup": session[:bottomless_cup],
+      "buffet": session[:buffet],
+      "private_room": session[:private_room],
+      "e_money": session[:e_money],
+      "web_reserve": session[:web_reserve],
+      "parking": session[:parking],
+      "birthday_privilege": session[:birthday_privilege],
+      "offset_page": session[:offset_page]
     }
 
-    #puts "\n~~~~~~~~data~~~~~~~~\n"
-    #puts data
+    puts "\n~~~~~~~~data~~~~~~~~\n"
+    puts data
 
     query=data.to_query #ハッシュをURL文字列に変換
     uri = URI("https://api.gnavi.co.jp/RestSearchAPI/20150630/?"+query)
@@ -73,6 +97,7 @@ class RestaurantsController < ApplicationController
 
         hash = JSON.parse(response.body, symbolize_names: true)
         @total = hash[:total_hit_count]
+        @page = session[:offset_page]
         @hash = hash[:rest]
 
         # puts @hash ["rest"][0]["name"]

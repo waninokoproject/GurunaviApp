@@ -1,0 +1,69 @@
+#searchModal.modal.fade[tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"]
+  .modal-dialog[role="document"]
+    .modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title
+          | search
+        button.close[type="button" data-dismiss="modal" aria-label="Close"]
+          span[aria-hidden="true"]
+            | ×
+      .modal-body
+        .container-fluid
+          .row.rounded
+            = form_with url: restaurants_search_path do |form|
+              legend.border-bottom freeword
+              .row.my-2
+                = form.text_field :freeword, class: 'form-control mx-3', placeholder: '例）パスタ'
+
+              legend.border-bottom range
+              .row.mx-2
+                .form-check.form-check-inline.m-3
+                  = form.radio_button :range, 1, class: 'form-check-input'
+                  = form.label :'300m', class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.radio_button :range, 2, class: 'form-check-input'
+                  = form.label :'500m', class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.radio_button :range, 3, class: 'form-check-input'
+                  = form.label :'1000m', class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.radio_button :range, 4, class: 'form-check-input'
+                  = form.label :'2000m', class: 'form-check-label'
+
+              legend.border-bottom condition
+              .row.mx-2
+                /!もしかしてだけどeach文で行けるのでは？
+                .form-check.form-check-inline.m-3
+                  = form.check_box :lunch, class: 'form-check-input'
+                  = form.label :ランチ, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :no_smoking, class: 'form-check-input'
+                  = form.label :禁煙席, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :card, class: 'form-check-input'
+                  = form.label :クレジットカード, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :bottomless_cup, class: 'form-check-input'
+                  = form.label :飲み放題, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :buffet, class: 'form-check-input'
+                  = form.label :食べ放題, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :private_room, class: 'form-check-input'
+                  = form.label :個室, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :e_money, class: 'form-check-input'
+                  = form.label :電子マネー, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :web_reserve, class: 'form-check-input'
+                  = form.label :web予約, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :parking, class: 'form-check-input'
+                  = form.label :駐車場, class: 'form-check-label'
+                .form-check.form-check-inline.m-3
+                  = form.check_box :birthday_privilege, class: 'form-check-input'
+                  = form.label :誕生日特典, class: 'form-check-label'
+              .modal-footer
+                button.btn.btn-secondary[type="button" data-dismiss="modal"]
+                  | Close
+                = form.submit :検索, class:'button btn btn-primary'
