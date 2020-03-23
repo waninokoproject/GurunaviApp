@@ -8,7 +8,7 @@ javascript:
       navigator.geolocation.getCurrentPosition(
         // 取得成功した場合
         function(position) {
-          //alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
+          alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
 
           $.ajax({
             url: 'restaurants/coordinate',

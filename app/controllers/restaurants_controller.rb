@@ -2,20 +2,20 @@ class RestaurantsController < ApplicationController
 
   #改善の余地あり。１ページで完結できない為。
   def top
-    session[:offset_page] = 1
   end
 
   #周辺のレストラン情報が表示される。
   def index
+    @page = 1
     #ぐるなびapi呼び出し
     restaurants_api
   end
 
   #検索を絞り込むためのアクション。freewordとかetc..
   def search
-    puts "\n\n-------parmas--------\n\n"
-    puts params
-    puts "\n\n"
+    #puts "\n\n-------parmas--------\n\n"
+    #puts params
+    #puts "\n\n"
 
     #paramsで送られてきた情報をsessionに入れる。
     params.each_key{|key|
@@ -24,13 +24,20 @@ class RestaurantsController < ApplicationController
       puts session[key]
     }
 
+    session[:offset_page] = 1
+    puts "\n\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n"
+    puts session[:offset_page]
+
     redirect_to restaurants_path
   end
 
+  # ページの移動をsessionで管理
   def page
-    session[:offset_page] = params[:page]
-    puts "\n\n----------------------------------------------------------\n\n"
-    puts params[:page]
+    if params[:page] == "1" then
+      session[:offset_page] -= 1
+    elsif params[:page] == "2" then
+      session[:offset_page] += 1
+    end
 
     redirect_to restaurants_path
   end
@@ -40,8 +47,9 @@ class RestaurantsController < ApplicationController
     #位置情報をsessionで管理
     session[:latitude] = params[:latitude]
     session[:longitude] = params[:longitude]
+    session[:offset_page] = 1
     puts "\n~~~~~~~~~this is update@longitude~~~~~~~~~~~\n"
-    puts @latitude
+    puts params
     redirect_to restaurants_path
     #redirect_to restaurants_path(latitude: params[:latitude], longitude: params[:longitude])
   end
@@ -55,7 +63,7 @@ class RestaurantsController < ApplicationController
     require "uri"
 
     data = {
-      "keyid": "",
+      "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
       "freeword": session[:freeword],
       "input_coordinates_mode": 1,
       "latitude": session[:latitude],
@@ -98,6 +106,10 @@ class RestaurantsController < ApplicationController
         hash = JSON.parse(response.body, symbolize_names: true)
         @total = hash[:total_hit_count]
         @page = session[:offset_page]
+        if @page.nil?
+          @page = 1
+          session[:offset_page] = 1
+        end
         @hash = hash[:rest]
 
         # puts @hash ["rest"][0]["name"]
