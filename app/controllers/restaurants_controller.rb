@@ -13,9 +13,6 @@ class RestaurantsController < ApplicationController
 
   #検索を絞り込むためのアクション。freewordとかetc..
   def search
-    #puts "\n\n-------parmas--------\n\n"
-    #puts params
-    #puts "\n\n"
 
     #paramsで送られてきた情報をsessionに入れる。
     params.each_key{|key|
@@ -25,8 +22,8 @@ class RestaurantsController < ApplicationController
     }
 
     session[:offset_page] = 1
-    puts "\n\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n"
-    puts session[:offset_page]
+    #puts "\n\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n"
+    #puts session[:offset_page]
 
     redirect_to restaurants_path
   end
@@ -48,10 +45,8 @@ class RestaurantsController < ApplicationController
     session[:latitude] = params[:latitude]
     session[:longitude] = params[:longitude]
     session[:offset_page] = 1
-    puts "\n~~~~~~~~~this is update@longitude~~~~~~~~~~~\n"
-    puts params
+
     redirect_to restaurants_path
-    #redirect_to restaurants_path(latitude: params[:latitude], longitude: params[:longitude])
   end
 
   private
@@ -63,7 +58,7 @@ class RestaurantsController < ApplicationController
     require "uri"
 
     data = {
-      "keyid": "272a4e4561b20e404f0c4f59e7fd22a2",
+      "keyid": "",
       "freeword": session[:freeword],
       "input_coordinates_mode": 1,
       "latitude": session[:latitude],
@@ -80,9 +75,6 @@ class RestaurantsController < ApplicationController
       "birthday_privilege": session[:birthday_privilege],
       "offset_page": session[:offset_page]
     }
-
-    puts "\n~~~~~~~~data~~~~~~~~\n"
-    puts data
 
     query=data.to_query #ハッシュをURL文字列に変換
     uri = URI("https://api.gnavi.co.jp/RestSearchAPI/20150630/?"+query)
@@ -112,8 +104,6 @@ class RestaurantsController < ApplicationController
         end
         @hash = hash[:rest]
 
-        # puts @hash ["rest"][0]["name"]
-        # puts @hash ["rest"][2]["name"]
       when Net::HTTPRedirection
         logger.warn("Redirection: code=#{response.code} message=#{response.message}")
         @message = "Redirection: code=#{response.code} message=#{response.message}"

@@ -27,7 +27,7 @@
               - else
                 = image_tag rest[:image_url][:shop_image1], class: 'rounded img-responsive img-thumbnail'
 
-            .col-md-8.p-1
+            .col-md-8.p-1.my-auto
               table.table
                   tr
                     th scope="row" name
@@ -93,6 +93,19 @@
                               tr
                                 th scope="row" lunch budget
                                 td = rest[:lunch]
+                              tr
+                                th scope="row" coupon
+                                td
+                                  a href="#{rest[:coupon_url][:mobile]}" #{rest[:coupon_url][:mobile]}
+                              tr
+                                th scope="row" url
+                                td
+                                  a href="#{rest[:url]}" #{rest[:url]}
+                              tr
+                                th scope="row" url_mobile
+                                td
+                                  a href="#{rest[:url_mobile]}" #{rest[:url_mobile]}
+
 
                   .modal-footer
                     button.btn.btn-default[type="button" data-dismiss="modal"]
